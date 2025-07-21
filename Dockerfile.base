@@ -32,26 +32,26 @@ RUN ARCH=$(dpkg --print-architecture) && \
 
 ENV INFRACOST_VERSION v0.10.29
 RUN ARCH=$(uname -m | sed 's/x86_64/amd64/g' | sed 's/aarch64/arm64/g') && \
-    curl -fsSL -o /tmp/infracost-linux-${ARCH}.tar.gz "https://github.com/terrateamio/packages/raw/main/infracost/infracost-${INFRACOST_VERSION}-linux-${ARCH}.tar.gz" \
-    && tar -C /tmp -xzf /tmp/infracost-linux-${ARCH}.tar.gz \
-    && mv /tmp/infracost-linux-${ARCH} /usr/local/bin/infracost \
-    && rm -f /tmp/infracost-linux-${ARCH}.tar.gz
+    curl -fsSL -o /tmp/infracost-linux-${ARCH}.tar.gz "https://github.com/infracost/infracost/releases/download/${INFRACOST_VERSION}/infracost-linux-${ARCH}.tar.gz" && \
+    tar -C /tmp -xzf /tmp/infracost-linux-${ARCH}.tar.gz && \
+    mv /tmp/infracost-linux-${ARCH} /usr/local/bin/infracost && \
+    rm -f /tmp/infracost-linux-${ARCH}.tar.gz
 
 ENV CONFTEST_VERSION 0.58.0
 RUN ARCH=$(uname -m | sed 's/aarch64/arm64/g') && \
-    mkdir /tmp/conftest \
-    && curl -fsSL -o /tmp/conftest/conftest.tar.gz "https://github.com/terrateamio/packages/raw/main/conftest/conftest_${CONFTEST_VERSION}_Linux_${ARCH}.tar.gz" \
-    && tar -C /tmp/conftest -xzf /tmp/conftest/conftest.tar.gz \
-    && mv /tmp/conftest/conftest /usr/local/bin/conftest \
-    && rm -rf /tmp/conftest
+    mkdir /tmp/conftest && \
+    curl -fsSL -o /tmp/conftest/conftest.tar.gz "https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VERSION}/conftest_${CONFTEST_VERSION}_Linux_${ARCH}.tar.gz" && \
+    tar -C /tmp/conftest -xzf /tmp/conftest/conftest.tar.gz && \
+    mv /tmp/conftest/conftest /usr/local/bin/conftest && \
+    rm -rf /tmp/conftest
 
 ENV AWSCLI_VERSION 2.13.26
-RUN ARCH=$(uname -m | sed 's/aarch64/aarch64/g') && \
-    mkdir /tmp/awscli \
-    && curl -fsSL -o /tmp/awscli/awscli.zip "https://github.com/terrateamio/packages/raw/main/aws/awscli-exe-linux-${ARCH}-${AWSCLI_VERSION}.zip" \
-    && unzip -q /tmp/awscli/awscli.zip -d /tmp/awscli/ \
-    && /tmp/awscli/aws/install > /dev/null \
-    && rm -rf /tmp/awscli
+RUN ARCH=$(uname -m) && \
+    mkdir /tmp/awscli && \
+    curl -fsSL -o /tmp/awscli/awscli.zip "https://awscli.amazonaws.com/awscli-exe-linux-${ARCH}.zip" && \
+    unzip -q /tmp/awscli/awscli.zip -d /tmp/awscli/ && \
+    /tmp/awscli/aws/install > /dev/null && \
+    rm -rf /tmp/awscli
 
 ENV CHECKOV_VERSION=2.5.10
 RUN pip3 install checkov==${CHECKOV_VERSION}
