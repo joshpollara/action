@@ -26,7 +26,7 @@ jobs:
         with:
           push: true
           file: Dockerfile.base
-          tags: ghcr.io/joshpollara/action-base:latest
+          tags: ghcr.io/joshpollara/action-base-test:latest
           platforms: linux/amd64,linux/arm64
           build-args: |
             GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
